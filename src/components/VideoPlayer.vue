@@ -24,6 +24,14 @@ function onPlayerPlay(event) {
 
 <script>
 export default {
+  computed: {
+    itemsSortedByTime() {
+      console.log('itemsSortedByTime', this)
+      const items = [...this.items]
+      items.sort((a, b) => a.time - b.time)
+      return items
+    },
+  },
   methods: {
     onPlayerReady() {
       console.log('onPlayerReady', this)
@@ -73,7 +81,7 @@ export default {
 
     <div id="list-container" class="flecks">
       <ul class="list">
-        <li v-for="item, i in items" :key="i">
+        <li v-for="item, i in itemsSortedByTime" :key="i">
           <button v-text="item" class="clickable" />
         </li>
       </ul>
