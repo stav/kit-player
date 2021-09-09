@@ -1,15 +1,33 @@
 <script setup>
-import { ref } from 'vue'
+import videojs from 'video.js'
+import '../assets/video-js.css'
 
-const count = ref(0)
+defineProps({
+  options: Object,
+})
+
+const player = null
+
+function onPlayerReady() {
+  console.log('onPlayerReady', this);
+}
+</script>
+
+<script>
+export default {
+  mounted() {
+    this.player = videojs(this.$refs.videoPlayer, this.options, this.onPlayerReady)
+  },
+  beforeUnmount() {
+    if (this.player) {
+      this.player.dispose()
+    }
+  },
+}
 </script>
 
 <template>
-  <button type="button" @click="count++">count is: {{ count }}</button>
+  <div>
+    <video ref="videoPlayer" class="video-js" />
+  </div>
 </template>
-
-<style scoped>
-a {
-  color: #42b983;
-}
-</style>

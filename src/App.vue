@@ -2,10 +2,21 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import VideoPlayer from './components/VideoPlayer.vue'
+
+const playerOptions = {
+  width: 240,
+  height: 240,
+  controls: true,
+  autoplay: false,
+  sources: [{
+    type: 'video/mp4',
+    src: 'http://localhost:3000/ViLC8JUvKxI.mp4',
+  }],
+}
 </script>
 
 <template>
-  <VideoPlayer />
+  <VideoPlayer :options="playerOptions" />
 </template>
 
 <style>
