@@ -4,8 +4,8 @@
 import VideoPlayer from './components/VideoPlayer.vue'
 
 const playerOptions = {
-  width: 240,
-  height: 240,
+  width: 256,
+  height: 144,
   controls: true,
   autoplay: false,
   sources: [{
@@ -24,7 +24,6 @@ const playerOptions = {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }
