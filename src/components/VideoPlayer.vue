@@ -16,16 +16,48 @@ let player = null
 let interval = null
 
 function onPlayerPlay(event) {
+  // Video duration metadata is not set until first played
   if (this.duration === null) {
     this.duration = this.player.duration()
   }
 }
 
 function cue(id) {
+  // Cue selected item for editing
   this.id = this.id === id ? null : id
   const item = this.items.find( i => i.id === id )
   this.time = parseInt(item.time)
   this.player.currentTime(item.time)
+}
+
+function autoSave() {
+  // Write items to local storage
+  window.localStorage.setItem('items', JSON.stringify(this.items))
+}
+
+function updateTime() {
+  // Update time display
+  if (this.player) {
+    this.time = parseInt(this.player.currentTime())
+  }
+}
+
+function loadData() {
+  // Pull items from local storage if we have them
+  const items = window.localStorage.getItem('items')
+  if (items) {
+    this.items = JSON.parse(items)
+  }
+}
+
+function setupInterval() {
+  // Start a clock loop to perform tasks, e.g. auto-save
+  const self = this
+  function f() {
+    self.updateTime()
+    self.autoSave()
+  }
+  this.interval = window.setInterval(f, 500)
 }
 
 </script>
@@ -48,14 +80,8 @@ export default {
   methods: {
     onPlayerReady() {
       console.log('onPlayerReady', this)
-      const self = this
-
-      function interval() {
-        if (self.player) {
-          self.time = parseInt(self.player.currentTime())
-        }
-      }
-      this.interval = window.setInterval(interval, 500)
+      this.loadData()
+      this.setupInterval()
     },
     mark() {
       const items = this.items
