@@ -8,25 +8,23 @@ defineProps({
 })
 
 const id = ref(null)
-const time = ref(null)
 const items = ref([])
-const duration = ref(null)
+const timeCurrent = ref(null)
+const timeBuffered = ref(null)
+const timeDuration = ref(null)
+const timeRemaining = ref(null)
 
 let player = null
 let interval = null
 
 function onPlayerPlay(event) {
-  // Video duration metadata is not set until first played
-  if (this.duration === null) {
-    this.duration = this.player.duration()
-  }
 }
 
 function cue(id) {
   // Cue selected item for editing
   this.id = this.id === id ? null : id
   const item = this.items.find( i => i.id === id )
-  this.time = parseInt(item.time)
+  this.timeCurrent = item.time
   this.player.currentTime(item.time)
 }
 
@@ -38,7 +36,15 @@ function autoSave() {
 function updateTime() {
   // Update time display
   if (this.player) {
-    this.time = parseInt(this.player.currentTime())
+    const player = this.player
+    this.timeDuration = player.duration()
+    this.timeCurrent = player.currentTime()
+    this.timeRemaining = player.remainingTime()
+    this.timeBuffered = parseInt(player.bufferedPercent() * 100)
+    // const bufferedTimeRange = player.buffered()
+    // if (bufferedTimeRange.length > 0) {
+    //   this.timeBuffered = bufferedTimeRange.end(0) - bufferedTimeRange.start(0)
+    // }
   }
 }
 
@@ -116,10 +122,8 @@ export default {
       <video
         ref="videoPlayer"
         class="video-js"
-        :playsinline="true"
-        @play="onPlayerPlay($event)"
       />
-      <div>{{ time }} / {{ parseInt(duration) }}</div>
+      <div>{{ parseInt(timeCurrent) }} / {{ parseInt(timeDuration) }} / -{{ parseInt(timeRemaining) }} ({{ timeBuffered }}%)</div>
     </div>
 
     <div id="list-container" class="flecks">
