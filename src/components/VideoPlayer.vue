@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     onPlayerReady() {
-      console.log('onPlayerReady', this)
+      console.log('onPlayerReady', this.player.options())
       this.loadData()
       this.setupInterval()
     },
@@ -104,6 +104,29 @@ export default {
     }
   },
   mounted() {
+    function hotkeys(event) {
+      console.log('hotkeys', event)
+      // Full screen
+      if (event.key === 'f') {
+        const p = this.player()
+        p.isFullscreen() ? p.exitFullscreen() : p.requestFullscreen()
+      }
+      // Mute
+      if (event.key === 'm') {
+        const p = this.player()
+        p.muted(!p.muted())
+      }
+      // Play / pause
+      if (event.key === ' ') {
+        const p = this.player()
+        console.log('space', p.paused())
+        p.paused() ? p.play() : p.pause()
+      }
+    }
+    if (this.options.userActions?.hotkeys === true) {
+      this.options.userActions.hotkeys = hotkeys
+    }
+    console.log('mounted', this.options)
     this.player = videojs(this.$refs.videoPlayer, this.options, this.onPlayerReady)
   },
   beforeUnmount() {

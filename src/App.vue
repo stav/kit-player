@@ -12,6 +12,10 @@ const playerOptions = {
     type: 'video/mp4',
     src: 'http://localhost:3000/ViLC8JUvKxI.mp4',
   }],
+  userActions: {
+    hotkeys: true,
+    doubleClick: false,
+  },
 }
 </script>
 
