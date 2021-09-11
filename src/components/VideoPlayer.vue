@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import videojs from 'video.js'
+import Progress from './Progress.vue'
 import '../assets/video-js.css'
 
 defineProps({
@@ -146,7 +147,12 @@ export default {
         ref="videoPlayer"
         class="video-js"
       />
-      <div>{{ parseInt(timeCurrent) }} / {{ parseInt(timeDuration) }} / -{{ parseInt(timeRemaining) }} ({{ timeBuffered }}%)</div>
+      <Progress
+        :timeCurrent="this.timeCurrent"
+        :timeBuffered="this.timeBuffered"
+        :timeDuration="this.timeDuration"
+        :timeRemaining="this.timeRemaining"
+      />
     </div>
 
     <div id="list-container" class="flecks">

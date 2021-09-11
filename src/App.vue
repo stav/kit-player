@@ -4,7 +4,7 @@
 import VideoPlayer from './components/VideoPlayer.vue'
 
 const playerOptions = {
-  width: 256,
+  width: 300,
   height: 144,
   controls: true,
   autoplay: false,
@@ -15,6 +15,9 @@ const playerOptions = {
   userActions: {
     hotkeys: true,
     doubleClick: false,
+  },
+  controlBar: {
+    fullscreenToggle: true,
   },
 }
 </script>
@@ -29,6 +32,5 @@ const playerOptions = {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
