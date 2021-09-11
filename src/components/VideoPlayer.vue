@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import videojs from 'video.js'
+import Form from './Form.vue'
 import List from './List.vue'
 import Progress from './Progress.vue'
 import '../assets/video-js.css'
@@ -191,14 +192,11 @@ export default {
       :cue="this.cue"
     />
 
-    <div id="form-container" class="flecks">
-      <div v-if="id !== null">
-        {{ id }}
-        <button class="clickable" @click="removeCuedItem" title="Remove this item"> X </button>
-        time <input type="text" name="time" v-model="cuedItem.time" />
-        text <input type="text" name="text" v-model="cuedItem.text" />
-      </div>
-    </div>
+    <Form
+      :id="this.id"
+      :item="this.cuedItem"
+      :remove="this.removeCuedItem"
+    />
 
   </div>
 </template>
@@ -207,14 +205,6 @@ export default {
   #video-container {
     border-color: red;
     text-align: center;
-  }
-  #form-container {
-    border-color: green;
-    color: azure;
-  }
-  #form-container button, #form-container input {
-    color: lightyellow;
-    background-color: darkgreen;
   }
   .flecks {
     display: inline-block;
