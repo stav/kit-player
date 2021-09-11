@@ -16,7 +16,6 @@ const timeDuration = ref(null)
 const timeRemaining = ref(null)
 
 let player = null
-let interval = null
 
 function onPlayerPlay(event) {
 }
@@ -58,13 +57,13 @@ function loadData() {
 }
 
 function setupInterval() {
-  // Start a clock loop to perform tasks, e.g. auto-save
+  // Start an interval timer to perform tasks, e.g. auto-save; cleared on dispose
   const self = this
   function f() {
     self.updateTime()
     self.autoSave()
   }
-  this.interval = window.setInterval(f, 500)
+  this.player.setInterval(f, 500)
 }
 
 </script>
@@ -131,9 +130,8 @@ export default {
     this.player = videojs(this.$refs.videoPlayer, this.options, this.onPlayerReady)
   },
   beforeUnmount() {
-    window.clearInterval(this.interval)
     if (this.player) {
-      this.player.dispose()
+      this.player.dispose() // Player will clear the interval timer
     }
   },
 }
