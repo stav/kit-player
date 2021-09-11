@@ -28,9 +28,9 @@ function cue(id) {
   this.player.currentTime(item.time)
 }
 
-function autoSave() {
+function save(key) {
   // Write items to local storage
-  window.localStorage.setItem('items', JSON.stringify(this.items))
+  window.localStorage.setItem(key, JSON.stringify(this.items))
 }
 
 function updateTime() {
@@ -61,7 +61,7 @@ function setupInterval() {
   const self = this
   function f() {
     self.updateTime()
-    self.autoSave()
+    self.save('items')
   }
   this.player.setInterval(f, 500)
 }
@@ -101,7 +101,12 @@ export default {
    removeCuedItem() {
       this.items.splice(this.cuedItemIndex, 1)
       this.id = null
-    }
+    },
+    removeAllItems() {
+      this.save('backup-items')
+      this.items = new Array()
+      this.id = null
+    },
   },
   mounted() {
     function hotkeys(event) {
@@ -159,14 +164,20 @@ export default {
           <button v-text="item" class="clickable" @click="() => cue(item.id)" />
         </li>
       </ul>
-      <button class="clickable" @click="mark"><strong> + </strong></button>
+      <div class="kit-flex">
+        <div class="kit-cell">
+          <button class="clickable" @click="mark" title="Mark cue point now"><strong> + </strong></button>
+        </div>
+        <div class="kit-cell" align="right">
+          <button class="clickable" @click="removeAllItems" title="Remove ALL cue marks!!"><strong> X </strong></button>
+        </div>
+      </div>
     </div>
 
     <div id="form-container" class="flecks">
       <div v-if="id !== null">
         {{ id }}
         <button class="clickable" @click="removeCuedItem" title="Remove this item"> X </button>
-        {{ cuedItem }}
         time <input type="text" name="time" v-model="cuedItem.time" />
         text <input type="text" name="text" v-model="cuedItem.text" />
       </div>
@@ -211,5 +222,12 @@ export default {
   }
   .clickable {
     cursor: pointer;
+  }
+  .kit-flex {
+    display: flex;
+  }
+  .kit-cell {
+    width: 50%;
+    display: table-cell;
   }
 </style>
