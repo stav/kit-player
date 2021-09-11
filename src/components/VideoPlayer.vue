@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import videojs from 'video.js'
+import List from './List.vue'
 import Progress from './Progress.vue'
 import '../assets/video-js.css'
 
@@ -19,18 +20,6 @@ const timeRemaining = ref(null)
 let player = null
 
 function onPlayerPlay(event) {
-}
-
-function cue(id, event) {
-  console.log('cue', event)
-  // Cue selected item for editing
-  this.id = this.id === id ? null : id
-  // Don't cue video if control key was used
-  if (!event.ctrlKey) {
-    const item = this.items.find( i => i.id === id )
-    this.timeCurrent = item.time
-    this.player.currentTime(item.time)
-  }
 }
 
 function save(key) {
@@ -103,7 +92,17 @@ export default {
         time: this.player.currentTime(),
       })
     },
-   removeCuedItem() {
+    cue(id, event) {
+      // Cue selected item for editing
+      this.id = this.id === id ? null : id
+      // Don't cue video if control key was used
+      if (!event.ctrlKey) {
+        const item = this.items.find( i => i.id === id )
+        this.timeCurrent = item.time
+        this.player.currentTime(item.time)
+      }
+    },
+    removeCuedItem() {
       this.items.splice(this.cuedItemIndex, 1)
       this.id = null
     },
@@ -184,24 +183,13 @@ export default {
       />
     </div>
 
-    <div id="list-container" class="flecks">
-      <ul class="list">
-        <li v-for="item, i in itemsSortedByTime" :key="i">
-          <button v-text="description ? item.text ? item.text : item : item" class="clickable" @click="($event) => cue(item.id, $event)" />
-        </li>
-      </ul>
-      <div class="kit-flex">
-        <div class="kit-cell">
-          <button class="clickable" @click="mark" title="Mark cue point now"><strong> + </strong></button>
-        </div>
-        <div class="kit-cell" align="center">
-          <button class="clickable" @click="description = !description" title="Toggle display"><strong> o </strong></button>
-        </div>
-        <div class="kit-cell" align="right">
-          <button class="clickable" @click="removeAllItems" title="Remove ALL cue marks!!"><strong> X </strong></button>
-        </div>
-      </div>
-    </div>
+    <List
+      :items="this.itemsSortedByTime"
+      :description="this.description"
+      :removeAllItems="this.removeAllItems"
+      :mark="this.mark"
+      :cue="this.cue"
+    />
 
     <div id="form-container" class="flecks">
       <div v-if="id !== null">
@@ -220,13 +208,6 @@ export default {
     border-color: red;
     text-align: center;
   }
-  #list-container {
-    border-color: blue;
-  }
-  #list-container button {
-    color: lightcyan;
-    background-color: dodgerblue;
-  }
   #form-container {
     border-color: green;
     color: azure;
@@ -243,20 +224,7 @@ export default {
     padding: 10px;
     margin:  10px;
   }
-  .list {
-    list-style-type: none;
-    padding-inline-start: 0;
-    text-align: left;
-    margin-block-start: 0;
-  }
   .clickable {
     cursor: pointer;
-  }
-  .kit-flex {
-    display: flex;
-  }
-  .kit-cell {
-    width: 33%;
-    display: table-cell;
   }
 </style>
