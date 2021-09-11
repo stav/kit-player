@@ -1,9 +1,9 @@
 <script setup>
 defineProps({
-  timeCurrent: Number,
-  timeBuffered: Number,
-  timeDuration: Number,
-  timeRemaining: Number,
+  timeCurrent: Number | String,
+  timeBuffered: Number | String,
+  timeDuration: Number | String,
+  timeRemaining: Number | String,
 })
 </script>
 

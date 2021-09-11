@@ -20,12 +20,16 @@ let player = null
 function onPlayerPlay(event) {
 }
 
-function cue(id) {
+function cue(id, event) {
+  console.log('cue', event)
   // Cue selected item for editing
   this.id = this.id === id ? null : id
-  const item = this.items.find( i => i.id === id )
-  this.timeCurrent = item.time
-  this.player.currentTime(item.time)
+  // Don't cue video if control key was used
+  if (!event.ctrlKey) {
+    const item = this.items.find( i => i.id === id )
+    this.timeCurrent = item.time
+    this.player.currentTime(item.time)
+  }
 }
 
 function save(key) {
@@ -111,21 +115,42 @@ export default {
   mounted() {
     function hotkeys(event) {
       console.log('hotkeys', event)
+      const p = this.player()
       // Full screen
       if (event.key === 'f') {
-        const p = this.player()
         p.isFullscreen() ? p.exitFullscreen() : p.requestFullscreen()
       }
       // Mute
       if (event.key === 'm') {
-        const p = this.player()
         p.muted(!p.muted())
       }
       // Play / pause
       if (event.key === ' ') {
-        const p = this.player()
-        console.log('space', p.paused())
         p.paused() ? p.play() : p.pause()
+      }
+      // Back 1 minute
+      if (event.key === 'ArrowDown') {
+        p.currentTime(p.currentTime() - 60)
+      }
+      // Back 10 seconds
+      if (event.key === 'ArrowLeft' && !event.ctrlKey) {
+        p.currentTime(p.currentTime() - 10)
+      }
+      // Back 1 seconds
+      if (event.key === 'ArrowLeft' && event.ctrlKey) {
+        p.currentTime(p.currentTime() - 1)
+      }
+      // Forward 1 minute
+      if (event.key === 'ArrowUp') {
+        p.currentTime(p.currentTime() + 60)
+      }
+      // Forward 10 seconds
+      if (event.key === 'ArrowRight' && !event.ctrlKey) {
+        p.currentTime(p.currentTime() + 10)
+      }
+      // Forward 1 seconds
+      if (event.key === 'ArrowRight' && event.ctrlKey) {
+        p.currentTime(p.currentTime() + 1)
       }
     }
     if (this.options.userActions?.hotkeys === true) {
@@ -161,7 +186,7 @@ export default {
     <div id="list-container" class="flecks">
       <ul class="list">
         <li v-for="item, i in itemsSortedByTime" :key="i">
-          <button v-text="item" class="clickable" @click="() => cue(item.id)" />
+          <button v-text="item" class="clickable" @click="($event) => cue(item.id, $event)" />
         </li>
       </ul>
       <div class="kit-flex">
