@@ -18,7 +18,7 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="kit-progress">
     ({{ timePercent }}%)
     {{ parseInt(timeCurrent) }}
     /
@@ -28,3 +28,9 @@ export default {
     ({{ timeBuffered }}%)
   </div>
 </template>
+
+<style scoped>
+  .kit-progress {
+    color: azure;
+  }
+</style>

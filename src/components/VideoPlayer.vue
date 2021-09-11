@@ -178,12 +178,22 @@ export default {
 <style scoped>
   #video-container {
     border-color: red;
+    text-align: center;
   }
   #list-container {
     border-color: blue;
   }
+  #list-container button {
+    color: lightcyan;
+    background-color: dodgerblue;
+  }
   #form-container {
     border-color: green;
+    color: azure;
+  }
+  #form-container button, #form-container input {
+    color: lightyellow;
+    background-color: darkgreen;
   }
   .flecks {
     display: inline-block;
