@@ -4,6 +4,8 @@ import videojs from 'video.js'
 import Form from './Form.vue'
 import List from './List.vue'
 import Video from './Video.vue'
+
+import {hotkeys as playerHotkeys} from '~/player'
 import '../assets/video-js.css'
 
 defineProps({
@@ -79,6 +81,13 @@ export default {
     },
   },
   methods: {
+    setupPlayer() {
+      if (this.options.userActions?.hotkeys === true) {
+        this.options.userActions.hotkeys = (event) => playerHotkeys(event, this.player)
+      }
+      const videoPlayer = window.document.getElementById('videoPlayer')
+      this.player = videojs(videoPlayer, this.options, this.onPlayerReady)
+    },
     onPlayerReady() {
       console.log('onPlayerReady', this.player.options())
       this.loadData()
@@ -115,51 +124,7 @@ export default {
   },
   mounted() {
     console.log('mounted', this)
-    function hotkeys(event) {
-      console.log('hotkeys', event)
-      const p = this.player()
-      // Full screen
-      if (event.key === 'f') {
-        p.isFullscreen() ? p.exitFullscreen() : p.requestFullscreen()
-      }
-      // Mute
-      if (event.key === 'm') {
-        p.muted(!p.muted())
-      }
-      // Play / pause
-      if (event.key === ' ') {
-        p.paused() ? p.play() : p.pause()
-      }
-      // Back 1 minute
-      if (event.key === 'ArrowDown') {
-        p.currentTime(p.currentTime() - 60)
-      }
-      // Back 10 seconds
-      if (event.key === 'ArrowLeft' && !event.ctrlKey) {
-        p.currentTime(p.currentTime() - 10)
-      }
-      // Back 1 seconds
-      if (event.key === 'ArrowLeft' && event.ctrlKey) {
-        p.currentTime(p.currentTime() - 1)
-      }
-      // Forward 1 minute
-      if (event.key === 'ArrowUp') {
-        p.currentTime(p.currentTime() + 60)
-      }
-      // Forward 10 seconds
-      if (event.key === 'ArrowRight' && !event.ctrlKey) {
-        p.currentTime(p.currentTime() + 10)
-      }
-      // Forward 1 seconds
-      if (event.key === 'ArrowRight' && event.ctrlKey) {
-        p.currentTime(p.currentTime() + 1)
-      }
-    }
-    if (this.options.userActions?.hotkeys === true) {
-      this.options.userActions.hotkeys = hotkeys
-    }
-    const videoPlayer = window.document.getElementById('videoPlayer')
-    this.player = videojs(videoPlayer, this.options, this.onPlayerReady)
+    this.setupPlayer()
   },
   beforeUnmount() {
     if (this.player) {
