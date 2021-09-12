@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import videojs from 'video.js'
 import Form from './Form.vue'
 import List from './List.vue'
-import Progress from './Progress.vue'
+import Video from './Video.vue'
 import '../assets/video-js.css'
 
 defineProps({
@@ -114,6 +114,7 @@ export default {
     },
   },
   mounted() {
+    console.log('mounted', this)
     function hotkeys(event) {
       console.log('hotkeys', event)
       const p = this.player()
@@ -157,8 +158,8 @@ export default {
     if (this.options.userActions?.hotkeys === true) {
       this.options.userActions.hotkeys = hotkeys
     }
-    console.log('mounted', this.options)
-    this.player = videojs(this.$refs.videoPlayer, this.options, this.onPlayerReady)
+    const videoPlayer = window.document.getElementById('videoPlayer')
+    this.player = videojs(videoPlayer, this.options, this.onPlayerReady)
   },
   beforeUnmount() {
     if (this.player) {
@@ -170,20 +171,12 @@ export default {
 
 <template>
   <div>
-
-    <div id="video-container" class="flecks">
-      <video
-        ref="videoPlayer"
-        class="video-js"
-      />
-      <Progress
-        :timeCurrent="this.timeCurrent"
-        :timeBuffered="this.timeBuffered"
-        :timeDuration="this.timeDuration"
-        :timeRemaining="this.timeRemaining"
-      />
-    </div>
-
+    <Video
+      :timeCurrent="this.timeCurrent"
+      :timeBuffered="this.timeBuffered"
+      :timeDuration="this.timeDuration"
+      :timeRemaining="this.timeRemaining"
+    />
     <List
       :items="this.itemsSortedByTime"
       :description="this.description"
@@ -191,21 +184,15 @@ export default {
       :mark="this.mark"
       :cue="this.cue"
     />
-
     <Form
       :id="this.id"
       :item="this.cuedItem"
       :remove="this.removeCuedItem"
     />
-
   </div>
 </template>
 
 <style scoped>
-  #video-container {
-    border-color: red;
-    text-align: center;
-  }
   .flecks {
     display: inline-block;
     border-width: thick;
