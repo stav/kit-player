@@ -38,18 +38,27 @@ export default {
       :toggleSources="this.toggleSources"
     />
     <ul v-if="showSources">
-      <li v-for="source in sources" :key="source.src" v-text="source" :class="{ active: source.src === currentSrc }" />
+      <li
+        v-for="source in sources" :key="source.src"
+        :class="{ active: source.src === currentSrc }"
+      >
+        <a :href="source.src" target="_blank" title="Open video in new window">{{ source }}</a>
+      </li>
     </ul>
   </div>
 </template>
 
 <style scoped>
   #video-container {
-    color: white;
+    color: azure;
     text-align: left;
     border-color: red;
   }
   .active {
     font-weight: bold;
+  }
+  a {
+    color: azure;
+    text-decoration: none;
   }
 </style>
