@@ -4,6 +4,7 @@ defineProps({
   timeBuffered: Number | String,
   timeDuration: Number | String,
   timeRemaining: Number | String,
+  toggleSources: Function,
 })
 </script>
 
@@ -18,7 +19,7 @@ export default {
 </script>
 
 <template>
-  <div class="kit-progress">
+  <div class="kit-progress" @click="toggleSources">
     ({{ timePercent }}%)
     {{ parseInt(timeCurrent) }}
     /
@@ -32,5 +33,6 @@ export default {
 <style scoped>
   .kit-progress {
     color: azure;
+    text-align: center;
   }
 </style>

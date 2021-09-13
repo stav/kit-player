@@ -1,19 +1,33 @@
 <script setup>
+import { ref, toRefs } from 'vue'
 import Progress from './Progress.vue'
 
-defineProps({
+const props = defineProps({
+  sources: Array,
+  currentSrc: String,
   timeCurrent: Number | String,
   timeBuffered: Number | String,
   timeDuration: Number | String,
   timeRemaining: Number | String,
 })
+const showSources = ref(false)
+const { sources } = toRefs(props)
+</script>
+
+<script>
+export default {
+  methods: {
+    toggleSources() {
+      this.showSources = !this.showSources
+    },
+  }
+}
 </script>
 
 <template>
   <div id="video-container" class="flecks">
     <video
       id="videoPlayer"
-      ref="videoPlayer"
       class="video-js"
     />
     <Progress
@@ -21,13 +35,21 @@ defineProps({
       :timeBuffered="this.timeBuffered"
       :timeDuration="this.timeDuration"
       :timeRemaining="this.timeRemaining"
+      :toggleSources="this.toggleSources"
     />
+    <ul v-if="showSources">
+      <li v-for="source in sources" :key="source.src" v-text="source" :class="{ active: source.src === currentSrc }" />
+    </ul>
   </div>
 </template>
 
 <style scoped>
   #video-container {
+    color: white;
+    text-align: left;
     border-color: red;
-    text-align: center;
+  }
+  .active {
+    font-weight: bold;
   }
 </style>

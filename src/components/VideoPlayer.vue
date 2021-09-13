@@ -20,10 +20,10 @@ const timeBuffered = ref(null)
 const timeDuration = ref(null)
 const timeRemaining = ref(null)
 
-let player = null
-
-function onPlayerPlay(event) {
-}
+const player = null
+const source = ''
+const sources = []
+const $videoPlayer = null
 
 function save(key) {
   // Write items to local storage
@@ -45,7 +45,7 @@ function updateTime() {
   }
 }
 
-function loadData() {
+function loadItems() {
   // Pull items from local storage if we have them
   const items = window.localStorage.getItem('items')
   if (items) {
@@ -62,7 +62,6 @@ function setupInterval() {
   }
   this.player.setInterval(f, 500)
 }
-
 </script>
 
 <script>
@@ -85,13 +84,15 @@ export default {
       if (this.options.userActions?.hotkeys === true) {
         this.options.userActions.hotkeys = (event) => playerHotkeys(event, this.player)
       }
-      const videoPlayer = window.document.getElementById('videoPlayer')
-      this.player = videojs(videoPlayer, this.options, this.onPlayerReady)
+      this.$videoPlayer = window.document.getElementById('videoPlayer')
+      this.player = videojs(this.$videoPlayer, this.options, this.onPlayerReady)
     },
     onPlayerReady() {
       console.log('onPlayerReady', this.player.options())
-      this.loadData()
+      this.loadItems()
       this.setupInterval()
+      this.sources = this.player.options().sources
+      this.source = this.player.currentSrc()
     },
     mark() {
       const items = this.items
@@ -137,6 +138,8 @@ export default {
 <template>
   <div>
     <Video
+      :sources="this.sources"
+      :currentSrc="this.source"
       :timeCurrent="this.timeCurrent"
       :timeBuffered="this.timeBuffered"
       :timeDuration="this.timeDuration"
