@@ -14,19 +14,30 @@ export default {
     timePercent() {
       return parseInt(parseFloat(this.timeCurrent) / parseFloat(this.timeDuration) * 100)
     },
+    value() {
+      return parseFloat(this.timeCurrent || 0)
+    },
+    max() {
+      return parseFloat(this.timeDuration || 0)
+    },
   },
 }
 </script>
 
 <template>
   <div class="kit-progress" @click="toggleSources">
-    ({{ timePercent }}%)
-    {{ parseInt(timeCurrent) }}
-    /
-    {{ parseInt(timeDuration) }}
-    /
-    -{{ parseInt(timeRemaining) }}
-    ({{ timeBuffered }}%)
+    <div>
+      <progress :value="value" :max="max" />
+    </div>
+    <div>
+      ({{ timePercent }}%)
+      {{ parseInt(timeCurrent) }}
+      /
+      {{ parseInt(timeDuration) }}
+      /
+      -{{ parseInt(timeRemaining) }}
+      ({{ timeBuffered }}%)
+    </div>
   </div>
 </template>
 
@@ -35,4 +46,18 @@ export default {
     color: azure;
     text-align: center;
   }
+  progress {
+    display: block;
+    font-size: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    width: 100%;
+    color: red;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  progress::-moz-progress-bar { background: red; }
+  progress::-webkit-progress-value { background: red; }
 </style>
