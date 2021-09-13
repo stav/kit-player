@@ -1,10 +1,10 @@
 <script setup>
 import { ref } from 'vue'
 import videojs from 'video.js'
+import 'videojs-youtube'
 import Form from './Form.vue'
 import List from './List.vue'
 import Video from './Video.vue'
-
 import {hotkeys as playerHotkeys} from '~/player'
 import '../assets/video-js.css'
 

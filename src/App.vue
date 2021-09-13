@@ -9,8 +9,8 @@ const playerOptions = {
   controls: true,
   autoplay: false,
   sources: [{
-    type: 'video/mp4',
-    src: 'http://localhost:3000/ViLC8JUvKxI.mp4',
+    type: 'video/youtube',
+    src: 'https://www.youtube.com/watch?v=ViLC8JUvKxI',
   }],
   userActions: {
     hotkeys: true,
