@@ -102,8 +102,9 @@ export default {
         id,
         time: this.player.currentTime(),
       })
+      this.cue(id)
     },
-    cue(id, event) {
+    cue(id, event = {}) {
       // Cue selected item for editing
       this.id = this.id === id ? null : id
       // Don't cue video if control key was used
@@ -168,6 +169,7 @@ export default {
       :loadBackupItems="this.loadBackupItems"
       :mark="this.mark"
       :cue="this.cue"
+      :id="this.id"
     />
     <Form
       :id="this.id"

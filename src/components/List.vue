@@ -6,6 +6,7 @@ defineProps({
   loadBackupItems: Function,
   mark: Function,
   cue: Function,
+  id: Number,
 })
 </script>
 
@@ -30,7 +31,7 @@ export default {
         <button
           @click="($event) => cue(item.id, $event)"
           v-text="description ? item.text ? item.text : item : item"
-          class="clickable"
+          :class="{ clickable: true, active: item.id == id }"
         />
       </li>
     </ul>
@@ -55,6 +56,11 @@ export default {
   #list-container button {
     color: lightcyan;
     background-color: dodgerblue;
+  }
+  #list-container button.active {
+    color: #222;
+    font-weight: bold;
+    background-color: skyblue;
   }
   .list {
     list-style-type: none;
