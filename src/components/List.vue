@@ -3,16 +3,35 @@ defineProps({
   items: Array,
   description: Boolean,
   removeAllItems: Function,
+  loadBackupItems: Function,
   mark: Function,
   cue: Function,
 })
+</script>
+
+<script>
+export default {
+  methods: {
+    xClicked(event) {
+      if (event.ctrlKey) {
+        this.loadBackupItems()
+      } else {
+        this.removeAllItems()
+      }
+    },
+  }
+}
 </script>
 
 <template>
   <div id="list-container" class="flecks">
     <ul class="list">
       <li v-for="item, i in items" :key="i">
-        <button v-text="description ? item.text ? item.text : item : item" class="clickable" @click="($event) => cue(item.id, $event)" />
+        <button
+          @click="($event) => cue(item.id, $event)"
+          v-text="description ? item.text ? item.text : item : item"
+          class="clickable"
+        />
       </li>
     </ul>
     <div class="kit-flex">
@@ -23,7 +42,7 @@ defineProps({
         <button class="clickable" @click="description = !description" title="Toggle display"><strong> o </strong></button>
       </div>
       <div class="kit-cell" align="right">
-        <button class="clickable" @click="removeAllItems" title="Remove ALL cue marks!!"><strong> X </strong></button>
+        <button class="clickable" @click="xClicked" title="Remove ALL cue marks!!"><strong> X </strong></button>
       </div>
     </div>
   </div>

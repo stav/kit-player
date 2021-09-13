@@ -118,9 +118,25 @@ export default {
       this.id = null
     },
     removeAllItems() {
-      this.save('backup-items')
-      this.items = new Array()
-      this.id = null
+      // Save items to back and then remove them all
+      if (this.items.length === 0) {
+        window.alert('No items to remove')
+      } else {
+        if (window.confirm('Remove all items?')) {
+          this.save('backup-items')
+          this.items = new Array()
+          this.id = null
+        }
+      }
+    },
+    loadBackupItems() {
+      // Pull items from local storage backup
+      if (this.items.length === 0 || window.confirm('Load backup items?')) {
+        const items = window.localStorage.getItem('backup-items')
+        if (items) {
+          this.items = JSON.parse(items)
+        }
+      }
     },
   },
   mounted() {
@@ -149,6 +165,7 @@ export default {
       :items="this.itemsSortedByTime"
       :description="this.description"
       :removeAllItems="this.removeAllItems"
+      :loadBackupItems="this.loadBackupItems"
       :mark="this.mark"
       :cue="this.cue"
     />
