@@ -1,6 +1,6 @@
 {
   "name": "kitplayer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -9,7 +9,8 @@
   "dependencies": {
     "video.js": "^7.14.3",
     "videojs-youtube": "^2.6.1",
-    "vue": "^3.2.6"
+    "vue": "^3.2.6",
+    "yaml": "2.0.0-8"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.6.1",

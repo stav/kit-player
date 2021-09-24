@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import videojs from 'video.js'
 import 'videojs-youtube'
+import Data from './Data.vue'
 import Form from './Form.vue'
 import List from './List.vue'
 import Video from './Video.vue'
@@ -45,14 +46,6 @@ function updateTime() {
   }
 }
 
-function loadItems() {
-  // Pull items from local storage if we have them
-  const items = window.localStorage.getItem('items')
-  if (items) {
-    this.items = JSON.parse(items)
-  }
-}
-
 function setupInterval() {
   // Start an interval timer to perform tasks, e.g. auto-save; cleared on dispose
   const self = this
@@ -66,6 +59,7 @@ function setupInterval() {
 
 <script>
 export default {
+
   computed: {
     itemsSortedByTime() {
       const items = [...this.items]
@@ -79,7 +73,21 @@ export default {
       return this.items.findIndex(item => item.id === this.id)
     },
   },
+
   methods: {
+    loadItems() {
+      // Pull items from local storage if we have them
+      const itemsString = window.localStorage.getItem('items')
+      if (itemsString) {
+        this.items = new Array()
+        for (let item of JSON.parse(itemsString)) {
+          this.items.push({
+            id: item.id || this.getNextAutoId(), // Make sure all items have an id
+            ...item,
+          })
+        }
+      }
+    },
     setupPlayer() {
       if (this.options.userActions?.hotkeys === true) {
         this.options.userActions.hotkeys = (event) => playerHotkeys(event, this.player)
@@ -94,9 +102,7 @@ export default {
       this.source = this.player.currentSrc()
     },
     mark() {
-      const items = this.items
-      const haveItems = !!items.length
-      const id = haveItems ? Math.max(...items.map(i => i.id)) + 1 : 0
+      const id = this.getNextAutoId()
       this.items.push({
         id,
         time: this.player.currentTime(),
@@ -138,17 +144,25 @@ export default {
         }
       }
     },
+    getNextAutoId() {
+      const items = this.items
+      const haveItems = !!items.length
+      return haveItems ? Math.max(...items.map(i => i.id)) + 1 : 0
+    },
   },
+
   mounted() {
     console.log('mounted', this)
     this.setupPlayer()
     this.loadItems()
   },
+
   beforeUnmount() {
     if (this.player) {
       this.player.dispose() // Player will clear the interval timer
     }
   },
+
 }
 </script>
 
@@ -177,6 +191,11 @@ export default {
       :id="this.id"
       :item="this.cuedItem"
       :remove="this.removeCuedItem"
+    />
+    <Data
+      ref="dataComponent"
+      :items="this.itemsSortedByTime"
+      :loadItems="this.loadItems"
     />
   </div>
 </template>

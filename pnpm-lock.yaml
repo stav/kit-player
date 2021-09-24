@@ -7,11 +7,13 @@ specifiers:
   videojs-youtube: ^2.6.1
   vite: ^2.5.4
   vue: ^3.2.6
+  yaml: 2.0.0-8
 
 dependencies:
   video.js: 7.14.3
   videojs-youtube: 2.6.1
   vue: 3.2.11
+  yaml: 2.0.0-8
 
 devDependencies:
   '@vitejs/plugin-vue': 1.6.2_@vue+compiler-sfc@3.2.11
@@ -586,3 +588,8 @@ packages:
   /yallist/3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
     dev: true
+
+  /yaml/2.0.0-8:
+    resolution: {integrity: sha512-QaYgJZMfWD6fKN/EYMk6w1oLWPCr1xj9QaPSZW5qkDb3y8nGCXhy2Ono+AF4F+CSL/vGcqswcAT0BaS//pgD2A==}
+    engines: {node: '>= 12'}
+    dev: false

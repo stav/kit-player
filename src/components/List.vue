@@ -20,6 +20,12 @@ export default {
         this.removeAllItems()
       }
     },
+    input() {
+      this.$parent.$refs.dataComponent.input()
+    },
+    output() {
+      this.$parent.$refs.dataComponent.output()
+    },
   }
 }
 </script>
@@ -38,6 +44,10 @@ export default {
     <div class="kit-flex">
       <div class="kit-cell">
         <button class="clickable" @click="mark" title="Mark cue point now"><strong> + </strong></button>
+      </div>
+      <div class="kit-cell" align="center">
+        <button class="clickable" @click="input" title="Import items as text"><strong> &lt; </strong></button>
+        <button class="clickable" @click="output" title="Export items as text"><strong> &gt; </strong></button>
       </div>
       <div class="kit-cell" align="center">
         <button class="clickable" @click="description = !description" title="Toggle display"><strong> o </strong></button>
@@ -72,7 +82,7 @@ export default {
     display: flex;
   }
   .kit-cell {
-    width: 33%;
+    width: 25%;
     display: table-cell;
   }
 </style>
