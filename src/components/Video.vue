@@ -3,6 +3,8 @@ import { ref, toRefs } from 'vue'
 import Progress from './Progress.vue'
 
 const props = defineProps({
+  cue: Function,
+  items: Array,
   sources: Array,
   currentSrc: String,
   timeCurrent: Number | String,
@@ -31,11 +33,13 @@ export default {
       class="video-js"
     />
     <Progress
+      :items="this.items"
       :timeCurrent="this.timeCurrent"
       :timeBuffered="this.timeBuffered"
       :timeDuration="this.timeDuration"
       :timeRemaining="this.timeRemaining"
       :toggleSources="this.toggleSources"
+      :cue="this.cue"
     />
     <ul v-if="showSources">
       <li

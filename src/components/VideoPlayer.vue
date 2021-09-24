@@ -89,7 +89,6 @@ export default {
     },
     onPlayerReady() {
       console.log('onPlayerReady', this.player.options())
-      this.loadItems()
       this.setupInterval()
       this.sources = this.player.options().sources
       this.source = this.player.currentSrc()
@@ -143,6 +142,7 @@ export default {
   mounted() {
     console.log('mounted', this)
     this.setupPlayer()
+    this.loadItems()
   },
   beforeUnmount() {
     if (this.player) {
@@ -155,12 +155,14 @@ export default {
 <template>
   <div>
     <Video
+      :items="this.items"
       :sources="this.sources"
       :currentSrc="this.source"
       :timeCurrent="this.timeCurrent"
       :timeBuffered="this.timeBuffered"
       :timeDuration="this.timeDuration"
       :timeRemaining="this.timeRemaining"
+      :cue="this.cue"
     />
     <List
       :items="this.itemsSortedByTime"
