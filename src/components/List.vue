@@ -12,6 +12,15 @@ defineProps({
 
 <script>
 export default {
+  computed: {
+    mappedItems() {
+      return this.items.map(item => ({
+        id: item.id,
+        time: item.time,
+        text: item.text,
+        msg: item.msg,
+       }))    },
+  },
   methods: {
     xClicked(event) {
       if (event.ctrlKey) {
@@ -26,14 +35,14 @@ export default {
     output() {
       this.$parent.$refs.dataComponent.output()
     },
-  }
+  },
 }
 </script>
 
 <template>
   <div id="list-container" class="flecks">
     <ul class="list">
-      <li v-for="item, i in items" :key="i">
+      <li v-for="item, i in mappedItems" :key="i">
         <button
           @click="($event) => cue(item.id, $event)"
           v-text="description ? item.text ? item.text : item : item"

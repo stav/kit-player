@@ -50,7 +50,6 @@ export default {
       catch {}
     },
     load() {
-      console.log('load', this.inputData)
       window.localStorage.setItem('items', this.getInputJson())
       this.loadItems()
     },
